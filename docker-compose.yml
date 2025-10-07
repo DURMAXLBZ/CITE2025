@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"        # Ollama API
+    volumes:
+      - ollama_models:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=6h
+    deploy:
+      resources:
+        limits:
+          cpus: "6"          # tune for your demo box
+          memory: 24g
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: openwebui
+    restart: unless-stopped
+    ports:
+      - "3000:8080"          # Web UI at http://localhost:3000
+    environment:
+      - WEBUI_NAME=District Local AI
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - ENABLE_MODEL_DOWNLOAD=false        # keep pulls explicit/controlled
+      - DEFAULT_MODELS=${DEFAULT_MODELS}
+      - WEBUI_AUTH=${WEBUI_AUTH}           # "false" for no login; "true" to enable auth
+    depends_on:
+      - ollama
+    volumes:
+      - webui_data:/app/backend/data
+      - ./prompts:/app/backend/data/prompts/custom   # ships your templates
+
+volumes:
+  ollama_models:
+  webui_data:
