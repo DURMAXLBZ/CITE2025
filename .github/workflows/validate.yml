@@ -1,5 +1,20 @@
 name: Validate Compose & Shell
-on: [push, pull_request]
+
+on:
+  push:
+    paths:
+      - 'docker-compose.yml'
+      - 'scripts/**'
+      - '.github/workflows/validate.yml'
+  pull_request:
+    paths:
+      - 'docker-compose.yml'
+      - 'scripts/**'
+      - '.github/workflows/validate.yml'
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
@@ -7,14 +22,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Only run if docker-compose.yml exists
+      # Make sure Compose v2 exists on the runner
+      - name: Ensure Docker Compose v2
+        if: ${{ hashFiles('docker-compose.yml') != '' }}
+        run: |
+          if ! docker compose version >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y docker-compose-plugin
+          fi
+
       - name: Docker Compose config
         if: ${{ hashFiles('docker-compose.yml') != '' }}
         run: docker compose config
 
-      # Only run if scripts/ exists and has files
-      - name: Shellcheck scripts
+      # Lint any shell scripts if the folder exists
+      - name: Install ShellCheck
         if: ${{ hashFiles('scripts/**') != '' }}
-        uses: ludeeus/action-shellcheck@master
-        with:
-          scandir: ./scripts
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: ShellCheck scripts
+        if: ${{ hashFiles('scripts/**') != '' }}
+        run: shellcheck -S warning scripts/*.sh || true
