@@ -4,7 +4,7 @@
 ![Runs Offline](https://img.shields.io/badge/Mode-Offline%20Capable-blue)
 ![CPU Only](https://img.shields.io/badge/Hardware-CPU--only-lightgrey)
 
-**One-command local AI for schools**: Ollama + Open WebUI running on an 11th-gen i7 / 32GB RAM (or similar). Private, fast enough for demos, and no student data leaves your network.
+**One-command local AI for schools**: Ollama + Open WebUI running on an 11th-gen i7 / 32GB RAM (or older). Private, fast enough for demos, and no student data leaves your network.
 
 **Project link:** https://github.com/DURMAXLBZ/CITE2025  
 **Scan to open:**  
