@@ -6,9 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Only run if docker-compose.yml exists
       - name: Docker Compose config
+        if: ${{ hashFiles('docker-compose.yml') != '' }}
         run: docker compose config
+
+      # Only run if scripts/ exists and has files
       - name: Shellcheck scripts
+        if: ${{ hashFiles('scripts/**') != '' }}
         uses: ludeeus/action-shellcheck@master
         with:
           scandir: ./scripts
