@@ -1,4 +1,5 @@
 cd /home/king/CITE2025
+
 cat > scripts/bootstrap.sh << 'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
