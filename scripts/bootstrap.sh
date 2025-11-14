@@ -1,5 +1,16 @@
+cat > scripts/bootstrap.sh << 'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
+
+# Detect docker compose command
+if docker compose version >/dev/null 2>&1; then
+  DC="docker compose"
+elif command -v docker-compose >/dev/null 2>&1; then
+  DC="docker-compose"
+else
+  echo "ERROR: Neither 'docker compose' nor 'docker-compose' is installed." >&2
+  exit 1
+fi
 
 try_pull() {
   local name
@@ -15,10 +26,12 @@ try_pull() {
 }
 
 echo "Starting Ollama..."
-docker compose up -d ollama
+$DC up -d ollama
 
 echo "Waiting for Ollama API..."
-until curl -fsS http://localhost:11434/api/tags >/dev/null 2>&1; do sleep 1; done
+until curl -fsS http://localhost:11434/api/tags >/dev/null 2>&1; do
+  sleep 1
+done
 
 # Llama 3.1 8B (known-good)
 try_pull "llama3.1:8b-instruct-q4_K_M"
@@ -37,5 +50,8 @@ try_pull \
   "qwen2:7b-instruct-q4_K_M"
 
 echo "Starting WebUI..."
-docker compose up -d openwebui
+$DC up -d openwebui
 echo "Done. Open http://localhost:3000"
+EOF
+
+
