@@ -1,3 +1,4 @@
+cd /home/king/CITE2025
 cat > scripts/bootstrap.sh << 'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
@@ -57,5 +58,3 @@ echo
 echo "[CITE2025] Done! Open:  http://localhost:3000"
 echo "If you don't see models in the dropdown, go to Settings → Models and click 'Sync from Ollama'."
 EOF
-
-chmod +x scripts/bootstrap.sh
