@@ -2,7 +2,7 @@ cat > scripts/bootstrap.sh << 'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Detect docker compose command
+# Detect docker compose command (supports both new and old style)
 if docker compose version >/dev/null 2>&1; then
   DC="docker compose"
 elif command -v docker-compose >/dev/null 2>&1; then
@@ -25,33 +25,37 @@ try_pull() {
   return 0  # don't fail the whole script
 }
 
-echo "Starting Ollama..."
+echo "[CITE2025] Starting Ollama container..."
 $DC up -d ollama
 
-echo "Waiting for Ollama API..."
+echo "[CITE2025] Waiting for Ollama API on http://localhost:11434..."
 until curl -fsS http://localhost:11434/api/tags >/dev/null 2>&1; do
   sleep 1
 done
 
-# Llama 3.1 8B (known-good)
-try_pull "llama3.1:8b-instruct-q4_K_M"
+echo "[CITE2025] Pulling default models (this runs only once per machine)..."
 
-# Phi-3 (try a few possibilities)
+# Llama 3.1 8B – main teaching / demo model
 try_pull \
-  "phi3:mini-4k-instruct-q4_K_M" \
-  "phi3:mini-128k-instruct-q4_K_M" \
-  "phi3:mini-4k-instruct" \
-  "phi3:mini-128k-instruct"
+  "llama3.1:8b-instruct-q4_K_M" \
+  "llama3.1:latest"
 
-# Qwen 2.5 7B (fallbacks)
+# Phi-3 – small and fast
 try_pull \
-  "qwen2.5:7b-instruct-q4_K_M" \
-  "qwen2.5:7b-instruct-q4_0" \
-  "qwen2:7b-instruct-q4_K_M"
+  "phi3:instruct" \
+  "phi3:latest"
 
-echo "Starting WebUI..."
+# Qwen 2.5 – multilingual / coding capable
+try_pull \
+  "qwen2.5:7b-instruct" \
+  "qwen2.5:latest"
+
+echo "[CITE2025] Starting Open WebUI..."
 $DC up -d openwebui
-echo "Done. Open http://localhost:3000"
+
+echo
+echo "[CITE2025] Done! Open:  http://localhost:3000"
+echo "If you don't see models in the dropdown, go to Settings → Models and click 'Sync from Ollama'."
 EOF
 
-
+chmod +x scripts/bootstrap.sh
