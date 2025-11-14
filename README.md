@@ -4,29 +4,42 @@
 ![Runs Offline](https://img.shields.io/badge/Mode-Offline%20Capable-blue)
 ![CPU Only](https://img.shields.io/badge/Hardware-CPU--only-lightgrey)
 
-**One-command local AI for schools**: Ollama + Open WebUI running entirely on-prem, CPU-only, and offline-capable.  
-Designed for district IT teams who want safe, private AI with **zero cloud dependency**.
+**One-command local AI for schools**: Ollama + Open WebUI running entirely on-prem and CPU-only.  
+Fast enough for demos on an 11th-gen i7 / 32GB RAM — and **no student data ever leaves your network.**
 
-Fast enough for demos on an **11th-gen i7 / 32GB RAM** (or older).  
-**Absolutely no student data leaves your network.**
-
----
-
-## 📌 Project Link
-
-**GitHub:** https://github.com/DURMAXLBZ/CITE2025  
-**QR Code:**  
+**Project link:** https://github.com/DURMAXLBZ/CITE2025  
+**Scan to open:**  
 <img src="qr_github.png" width="180" alt="QR to GitHub" />
 
 ---
 
-# 🚀 Quick Start (Clean Ubuntu Install)
+## ⚠️ Prerequisites (Required)
 
-These commands work on **any fresh Ubuntu Desktop or Server** (22.04, 24.04, 25.04, etc).
+Before running the Quick Start below, **please ensure your system already has:**
 
-### 1. Install dependencies (Docker + Compose + Git + Curl)
+- **Docker**
+- **Docker Compose** (`docker compose` or `docker-compose`)
+- **Git**
+- **curl**
+
+💡 *If you're using a fresh Ubuntu install, install these first.*
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-sudo apt update -y
-sudo apt install -y git curl docker.io docker-compose
-sudo systemctl enable --now docker
+git clone https://github.com/DURMAXLBZ/CITE2025.git
+cd CITE2025
+
+# Start containers (Ollama + Open WebUI)
+docker compose up -d
+# If your system uses docker-compose instead:
+# docker-compose up -d
+
+# First-time setup (pulls models, waits for Ollama)
+./scripts/bootstrap.sh
+
+# Open in your browser:
+# http://localhost:3000
+``
