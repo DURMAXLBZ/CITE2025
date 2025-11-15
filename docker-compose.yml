@@ -11,26 +11,38 @@ services:
       - ollama_models:/root/.ollama
     environment:
       - OLLAMA_KEEP_ALIVE=6h
-    # NOTE: deploy.resources is ignored by plain docker-compose,
-    # but it's fine to keep as documentation / for Swarm.
     deploy:
       resources:
         limits:
           cpus: "6"          # tune for your demo box
           memory: 24g
-    # Auto-start Ollama and pull default models on first run
+    # Start Ollama and auto-pull models inside the container
     entrypoint: ["/bin/sh", "-c"]
     command: |
+      set -e
+      echo "[CITE2025] Starting Ollama server..."
       ollama serve &
-      # Give the server a moment to start up
-      sleep 5
+      OLLAMA_PID=$!
+
+      echo "[CITE2025] Waiting for Ollama API to be ready..."
+      # Simple readiness loop
+      for i in $(seq 1 30); do
+        if curl -s http://127.0.0.1:11434/api/tags >/dev/null 2>&1; then
+          echo "[CITE2025] Ollama is ready."
+          break
+        fi
+        echo "[CITE2025] ...still starting ($i/30)"
+        sleep 2
+      done
+
       echo "[CITE2025] Pulling default models into Ollama..."
       ollama pull llama3.1:8b-instruct-q4_K_M || true
       ollama pull phi3:instruct || true
       ollama pull qwen2.5:7b-instruct || true
       echo "[CITE2025] Model pulls done. Ollama is serving on :11434."
-      # Keep container running by waiting on background server
-      wait
+
+      # Keep container alive by waiting on the Ollama process
+      wait "$OLLAMA_PID"
 
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
