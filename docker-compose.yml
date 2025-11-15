@@ -16,33 +16,15 @@ services:
         limits:
           cpus: "6"          # tune for your demo box
           memory: 24g
-    # Start Ollama and auto-pull models inside the container
+    # Auto-pull models INSIDE the container, then start the server
     entrypoint: ["/bin/sh", "-c"]
     command: |
-      set -e
-      echo "[CITE2025] Starting Ollama server..."
-      ollama serve &
-      OLLAMA_PID=$!
-
-      echo "[CITE2025] Waiting for Ollama API to be ready..."
-      # Simple readiness loop
-      for i in $(seq 1 30); do
-        if curl -s http://127.0.0.1:11434/api/tags >/dev/null 2>&1; then
-          echo "[CITE2025] Ollama is ready."
-          break
-        fi
-        echo "[CITE2025] ...still starting ($i/30)"
-        sleep 2
-      done
-
-      echo "[CITE2025] Pulling default models into Ollama..."
+      echo "[CITE2025] Pulling default models into Ollama (first run may take a while)..."
       ollama pull llama3.1:8b-instruct-q4_K_M || true
       ollama pull phi3:instruct || true
       ollama pull qwen2.5:7b-instruct || true
-      echo "[CITE2025] Model pulls done. Ollama is serving on :11434."
-
-      # Keep container alive by waiting on the Ollama process
-      wait "$OLLAMA_PID"
+      echo "[CITE2025] Starting Ollama server on :11434..."
+      exec ollama serve
 
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
