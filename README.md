@@ -37,6 +37,10 @@ docker compose up -d
 # If your system uses docker-compose instead:
 # docker-compose up -d
 
+# Run the following
+chmod +x run_demo.sh
+./run_demo.sh
+
 # Open in your browser:
 # http://localhost:3000
 ``
