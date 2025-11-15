@@ -18,7 +18,7 @@ Fast enough for demos on an 11th-gen i7 / 32GB RAM — and **no student data eve
 Before running the Quick Start below, **please ensure your system already has:**
 
 - **Docker**
-- **Docker Compose V2** (`docker compose` or `docker-compose`)
+- **Docker Compose V2** 
 - **Git**
 - **curl**
 
@@ -35,8 +35,6 @@ cd CITE2025
 
 # Start containers (Ollama + Open WebUI)
 docker compose up -d
-# If your system uses docker-compose instead:
-# docker-compose up -d
 
 # Run the following
 chmod +x run_demo.sh
