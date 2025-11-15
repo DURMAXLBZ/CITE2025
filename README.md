@@ -29,7 +29,7 @@ Before running the Quick Start below, **please ensure your system already has:**
 ## 🚀 Quick Start
 
 ```bash
-# Copy and paste the following to copy the repo:
+# Copy and paste the following to download the repo:
 git clone https://github.com/DURMAXLBZ/CITE2025.git
 cd CITE2025
 
