@@ -37,9 +37,6 @@ docker compose up -d
 # If your system uses docker-compose instead:
 # docker-compose up -d
 
-# First-time setup (pulls models, waits for Ollama)
-./scripts/bootstrap.sh
-
 # Open in your browser:
 # http://localhost:3000
 ``
