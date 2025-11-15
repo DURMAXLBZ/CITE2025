@@ -18,7 +18,7 @@ Fast enough for demos on an 11th-gen i7 / 32GB RAM — and **no student data eve
 Before running the Quick Start below, **please ensure your system already has:**
 
 - **Docker**
-- **Docker Compose** (`docker compose` or `docker-compose`)
+- **Docker Compose V2** (`docker compose` or `docker-compose`)
 - **Git**
 - **curl**
 
