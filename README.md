@@ -29,6 +29,7 @@ Before running the Quick Start below, **please ensure your system already has:**
 ## 🚀 Quick Start
 
 ```bash
+# Copy and paste the following to copy the repo:
 git clone https://github.com/DURMAXLBZ/CITE2025.git
 cd CITE2025
 
@@ -42,5 +43,5 @@ chmod +x run_demo.sh
 ./run_demo.sh
 
 # Open in your browser:
-# http://localhost:3000
+http://localhost:3000
 ``
