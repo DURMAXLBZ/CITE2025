@@ -42,4 +42,22 @@ chmod +x run_demo.sh
 
 # Open in your browser:
 http://localhost:3000
-``
+```
+Demo Video — See CITE2025 in Action
+
+A complete walkthrough showing exactly what happens when you run the CITE2025 one-command setup on real district hardware.
+
+CPU-only Ollama deployment
+
+Automatic OpenWebUI launch
+
+One-command local AI environment
+
+100% offline-friendly
+
+No student data transmitted or stored externally
+
+Fast startup on standard district hardware
+
+📥 Download the demo video (MP4)
+https://github.com/DURMAXLBZ/CITE2025/releases/latest/download/CITE2025.mp4
