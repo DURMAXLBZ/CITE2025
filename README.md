@@ -43,7 +43,7 @@ chmod +x run_demo.sh
 # Open in your browser:
 http://localhost:3000
 ```
-Demo Video — See CITE2025 in Action
+🎬 Demo Video — See CITE2025 in Action
 
 A complete walkthrough showing exactly what happens when you run the CITE2025 one-command setup on real district hardware.
 
